@@ -1,4 +1,4 @@
-# DrawDiary - 그림일기 앱
+# DrawDiary - 서화일기 앱
 
 ## 🚀 빠른 시작
 
@@ -24,10 +24,10 @@ http://localhost:8081 에서 접속
 
 ### ✅ MVP 기능 (48시간 목표)
 - [x] 일기 작성 (텍스트 140자 + 손그림)
-- [x] 로컬 저장 (AsyncStorage)
+- [x] 로컬 저장 (AsyncStorage + localStorage)
 - [x] 일기 목록 (최대 5개)
-- [x] Apple 디자인 시스템
-- [x] 라이트/다크 테마
+- [x] 국립중앙박물관 디자인 시스템
+- [x] 웹/모바일 크로스플랫폼
 
 ### 🔄 향후 기능
 - [ ] 캘린더 뷰
@@ -38,11 +38,18 @@ http://localhost:8081 에서 접속
 ## 🛠️ 기술 스택
 - React Native + Expo
 - TypeScript
-- AsyncStorage (로컬 저장)
+- AsyncStorage (모바일) + localStorage (웹)
 - React Navigation
 - React Native SVG (그림 기능)
 
 ## 📦 배포
+
+### Vercel 웹 배포
+```bash
+cd app
+npm run build
+vercel
+```
 
 ### Expo Go 공유 (즉시 출시)
 ```bash
@@ -59,9 +66,9 @@ eas submit
 ```
 
 ## 🎨 디자인
-- Apple Human Interface Guidelines 기반
-- SF Pro 폰트 스타일
-- 시스템 색상 사용
+- 국립중앙박물관 디자인 시스템 기반
+- 전통 한글 폰트 스타일
+- 박물관 컬러 팔레트
 - 다크모드 지원
 
 ## 📝 사용 방법
