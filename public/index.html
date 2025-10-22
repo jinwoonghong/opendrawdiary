@@ -41,7 +41,6 @@
             const [diaries, setDiaries] = useState([]);
             const [currentView, setCurrentView] = useState('home');
             const [diaryText, setDiaryText] = useState('');
-            const [isComposing, setIsComposing] = useState(false);
             
             useEffect(() => {
                 const savedDiaries = localStorage.getItem('drawdiary_entries');
@@ -129,19 +128,10 @@
                             <textarea
                                 value={diaryText}
                                 onChange={(e) => {
-                                    if (!isComposing) {
-                                        setDiaryText(e.target.value.slice(0, 140));
+                                    const value = e.target.value;
+                                    if (value.length <= 140) {
+                                        setDiaryText(value);
                                     }
-                                }}
-                                onInput={(e) => {
-                                    if (!isComposing) {
-                                        setDiaryText(e.target.value.slice(0, 140));
-                                    }
-                                }}
-                                onCompositionStart={() => setIsComposing(true)}
-                                onCompositionEnd={(e) => {
-                                    setIsComposing(false);
-                                    setDiaryText(e.target.value.slice(0, 140));
                                 }}
                                 placeholder="오늘 있었던 일을 간략히 기록해보세요..."
                                 style={{
