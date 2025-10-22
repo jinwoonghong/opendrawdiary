@@ -241,6 +241,227 @@
             font-size: 12;
             color: #a0aec0;
         }
+        
+        /* Matrix Visualization */
+        .matrix-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .matrix-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        
+        .matrix-day {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .matrix-day.empty {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .matrix-day.has-entry {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+        }
+        
+        .matrix-day.today {
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.5);
+        }
+        
+        .matrix-day:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        
+        .matrix-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .legend-box {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        
+        /* Calendar Modal */
+        .calendar-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .calendar-content {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .calendar-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #718096;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-close:hover {
+            background: #f7fafc;
+            color: #2d3748;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-weekday {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #718096;
+            padding: 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .calendar-date {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .calendar-date.other-month {
+            color: #cbd5e0;
+        }
+        
+        .calendar-date.has-entry {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .calendar-date.today {
+            border: 2px solid #667eea;
+            font-weight: 600;
+        }
+        
+        .calendar-date:hover:not(.other-month) {
+            background: #edf2f7;
+            transform: scale(1.05);
+        }
+        
+        .calendar-date.has-entry:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+        
+        .calendar-entry {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .calendar-entry-date {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .calendar-entry-text {
+            color: #2d3748;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .no-entry {
+            text-align: center;
+            color: #a0aec0;
+            font-style: italic;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -257,9 +478,9 @@
                         <div class="stat-number" id="entryCount">0</div>
                         <div class="stat-label">Entries</div>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="todayDay"></div>
-                        <div class="stat-label">Today</div>
+                    <div class="stat-item" style="cursor: pointer;" onclick="showCalendar()">
+                        <div class="stat-number" id="todayDay" style="text-decoration: underline;"></div>
+                        <div class="stat-label">Today (Click)</div>
                     </div>
                 </div>
             </div>
@@ -279,6 +500,25 @@
                     <h3>Recent Entry</h3>
                     <p id="recentEntryText"></p>
                     <div id="recentEntryDate" class="recent-entry-date"></div>
+                </div>
+                
+                <div class="matrix-container">
+                    <div class="matrix-title">Writing Activity - Last 35 Days</div>
+                    <div class="matrix-grid" id="matrixGrid"></div>
+                    <div class="matrix-legend">
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: rgba(255, 255, 255, 0.1);"></div>
+                            <span>No Entry</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);"></div>
+                            <span>Written</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box" style="border: 2px solid white;"></div>
+                            <span>Today</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -532,6 +772,173 @@
             saveDiaries();
             updateUI();
             showListScreen();
+        }
+
+        // Matrix functions
+        function updateMatrix() {
+            const matrixGrid = document.getElementById('matrixGrid');
+            const today = new Date();
+            const matrixData = [];
+            
+            // Generate last 35 days
+            for (let i = 34; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toDateString();
+                const hasEntry = diaries.some(diary => 
+                    new Date(diary.createdAt).toDateString() === dateStr
+                );
+                
+                matrixData.push({
+                    date: date,
+                    hasEntry: hasEntry,
+                    isToday: i === 0
+                });
+            }
+            
+            matrixGrid.innerHTML = matrixData.map((day, index) => {
+                const classes = ['matrix-day'];
+                if (day.hasEntry) classes.push('has-entry');
+                else classes.push('empty');
+                if (day.isToday) classes.push('today');
+                
+                return `
+                    <div class="${classes.join(' '}" 
+                         onclick="${day.hasEntry ? `showCalendarForDate('${day.date.toISOString()}')` : ''}"
+                         title="${day.date.toLocaleDateString()}">
+                        ${day.date.getDate()}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Calendar functions
+        let currentCalendarDate = new Date();
+
+        function showCalendar() {
+            const modal = document.createElement('div');
+            modal.className = 'calendar-modal';
+            modal.id = 'calendarModal';
+            modal.innerHTML = `
+                <div class="calendar-content">
+                    <div class="calendar-header">
+                        <h3 class="calendar-title">${currentCalendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</h3>
+                        <button class="calendar-close" onclick="closeCalendar()">×</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                    <div id="selectedEntry"></div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            updateCalendar();
+        }
+
+        function closeCalendar() {
+            const modal = document.getElementById('calendarModal');
+            if (modal) modal.remove();
+        }
+
+        function updateCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            if (!calendarGrid) return;
+            
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const today = new Date();
+            
+            let html = weekdays.map(day => 
+                `<div class="calendar-weekday">${day}</div>`
+            ).join('');
+            
+            for (let i = 0; i < 42; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                
+                const isCurrentMonth = currentDate.getMonth() === month;
+                const isToday = currentDate.toDateString() === today.toDateString();
+                const dateStr = currentDate.toDateString();
+                const hasEntry = diaries.some(diary => 
+                    new Date(diary.createdAt).toDateString() === dateStr
+                );
+                
+                const classes = ['calendar-date'];
+                if (!isCurrentMonth) classes.push('other-month');
+                if (hasEntry) classes.push('has-entry');
+                if (isToday) classes.push('today');
+                
+                html += `
+                    <div class="${classes.join(' ')}" 
+                         onclick="selectCalendarDate('${currentDate.toISOString()}')">
+                        ${currentDate.getDate()}
+                    </div>
+                `;
+            }
+            
+            calendarGrid.innerHTML = html;
+        }
+
+        function selectCalendarDate(dateStr) {
+            const date = new Date(dateStr);
+            const dateKey = date.toDateString();
+            const entry = diaries.find(diary => 
+                new Date(diary.createdAt).toDateString() === dateKey
+            );
+            
+            const selectedEntryDiv = document.getElementById('selectedEntry');
+            if (entry) {
+                selectedEntryDiv.innerHTML = `
+                    <div class="calendar-entry">
+                        <div class="calendar-entry-date">${entry.date}</div>
+                        <div class="calendar-entry-text korean-font">${entry.text}</div>
+                    </div>
+                `;
+            } else {
+                selectedEntryDiv.innerHTML = `
+                    <div class="no-entry">
+                        No entry for ${date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    </div>
+                `;
+            }
+        }
+
+        function showCalendarForDate(dateStr) {
+            currentCalendarDate = new Date(dateStr);
+            showCalendar();
+            selectCalendarDate(dateStr);
+        }
+
+        // Update UI elements
+        function updateUI() {
+            // Update entry count
+            document.getElementById('entryCount').textContent = diaries.length;
+            document.getElementById('entryCountBadge').textContent = diaries.length + ' ' + (diaries.length === 1 ? 'Entry' : 'Entries');
+            
+            // Update today's day
+            const today = new Date();
+            document.getElementById('todayDay').textContent = today.toLocaleDateString('en', { weekday: 'short' });
+            document.getElementById('fullDate').textContent = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            // Update recent entry
+            if (diaries.length > 0) {
+                const recentEntry = diaries[0];
+                document.getElementById('recentEntryCard').style.display = 'block';
+                document.getElementById('recentEntryText').textContent = '"' + (recentEntry.text.length > 60 ? recentEntry.text.substring(0, 60) + '...' : recentEntry.text) + '"';
+                document.getElementById('recentEntryDate').textContent = recentEntry.date;
+            } else {
+                document.getElementById('recentEntryCard').style.display = 'none';
+            }
+            
+            // Update diary list
+            updateDiaryList();
+            
+            // Update matrix
+            updateMatrix();
         }
 
         // Initialize app when DOM is loaded
