@@ -5,26 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>서화일기 - DrawDiary</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: #8B4513;
-            color: #1a1a2e;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #2d3748;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+        
         #root {
             height: 100vh;
             display: flex;
             flex-direction: column;
         }
+        
         .loading {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-size: 18px;
-            color: #f8f9fa;
+            color: white;
+            font-weight: 500;
         }
+        
+        .korean-font {
+            font-family: '궁서', 'Gungsuh', 'Batang', serif;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modern-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .modern-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .modern-button:active {
+            transform: translateY(0);
+        }
+        
+        .secondary-button {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .secondary-button:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .modern-textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .modern-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .diary-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .diary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .mood-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .mood-good { background: #48bb78; }
+        .mood-neutral { background: #ed8936; }
+        .mood-bad { background: #f56565; }
     </style>
 </head>
 <body>
@@ -68,62 +177,216 @@
             };
             
             const HomeScreen = () => (
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 20, background: '#f8f9fa' }}>
-                    <header style={{ textAlign: 'center', marginBottom: 30 }}>
-                        <h1 style={{ color: '#8B4513', fontSize: 32, marginBottom: 10 }}>서화일기</h1>
-                        <p style={{ color: '#666', fontSize: 16 }}>전통미与现代科技的完美结合</p>
+                <div style={{ 
+                    flex: 1, 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    padding: 20,
+                    background: 'transparent'
+                }}>
+                    <div style={{ textAlign: 'center', marginBottom: 40 }}>
+                        <h1 className="korean-font" style={{ 
+                            color: 'white', 
+                            fontSize: 42, 
+                            marginBottom: 12,
+                            fontWeight: 700,
+                            textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        }}>
+                            서화일기
+                        </h1>
+                        <p style={{ 
+                            color: 'rgba(255, 255, 255, 0.9)', 
+                            fontSize: 18,
+                            fontWeight: 400,
+                            marginBottom: 8
+                        }}>
+                            오늘의 순간을 아름답게 기록하세요
+                        </p>
+                        <div style={{ 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            gap: 20,
+                            marginTop: 16
+                        }}>
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ 
+                                    fontSize: 24, 
+                                    fontWeight: 700, 
+                                    color: 'white' 
+                                }}>
+                                    {diaries.length}
+                                </div>
+                                <div style={{ 
+                                    fontSize: 12, 
+                                    color: 'rgba(255, 255, 255, 0.7)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: 1
+                                }}>
+                                    Entries
+                                </div>
+                            </div>
+                            <div style={{ textAlign: 'center' }}>
+                                <div style={{ 
+                                    fontSize: 24, 
+                                    fontWeight: 700, 
+                                    color: 'white' 
+                                }}>
+                                    {new Date().toLocaleDateString('en', { weekday: 'short' })}
+                                </div>
+                                <div style={{ 
+                                    fontSize: 12, 
+                                    color: 'rgba(255, 255, 255, 0.7)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: 1
+                                }}>
+                                    Today
+                                </div>
+                            </div>
+                        </div>
                     </header>
                     
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    <div style={{ 
+                        flex: 1, 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: 16,
+                        maxWidth: 400,
+                        margin: '0 auto',
+                        width: '100%'
+                    }}>
                         <button 
                             onClick={() => setCurrentView('write')}
+                            className="modern-button"
                             style={{
-                                padding: 20,
-                                fontSize: 18,
-                                backgroundColor: '#8B4513',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: 8,
-                                cursor: 'pointer'
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: 12,
+                                fontSize: 16
                             }}
                         >
-                            새 일기 쓰기
+                            <span style={{ fontSize: 20 }}>✍️</span>
+                            Write Today's Entry
                         </button>
                         
                         <button 
                             onClick={() => setCurrentView('list')}
+                            className="secondary-button"
                             style={{
-                                padding: 20,
-                                fontSize: 18,
-                                backgroundColor: '#1a1a2e',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: 8,
-                                cursor: 'pointer'
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: 12,
+                                fontSize: 16
                             }}
                         >
-                            일기 목록 보기
+                            <span style={{ fontSize: 20 }}>📖</span>
+                            View Past Entries
                         </button>
+                        
+                        {diaries.length > 0 && (
+                            <div className="glass-card" style={{ padding: 20, marginTop: 20 }}>
+                                <h3 style={{ 
+                                    margin: '0 0 12px 0', 
+                                    color: '#4a5568',
+                                    fontSize: 14,
+                                    fontWeight: 600,
+                                    textTransform: 'uppercase',
+                                    letterSpacing: 1
+                                }}>
+                                    Recent Entry
+                                </h3>
+                                <p style={{ 
+                                    margin: 0,
+                                    color: '#718096',
+                                    fontSize: 14,
+                                    lineHeight: 1.5,
+                                    fontStyle: 'italic'
+                                }}>
+                                    "{diaries[0].text.length > 60 ? diaries[0].text.substring(0, 60) + '...' : diaries[0].text}"
+                                </p>
+                                <div style={{ 
+                                    marginTop: 8,
+                                    fontSize: 12,
+                                    color: '#a0aec0'
+                                }}>
+                                    {diaries[0].date}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             );
             
             const WriteScreen = () => (
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 20, background: '#f8f9fa' }}>
-                    <header style={{ marginBottom: 20 }}>
+                <div style={{ 
+                    flex: 1, 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    padding: 20,
+                    background: 'transparent'
+                }}>
+                    <div style={{ marginBottom: 30 }}>
                         <button 
                             onClick={() => setCurrentView('home')}
-                            style={{ background: 'none', border: 'none', fontSize: 16, cursor: 'pointer', color: '#8B4513' }}
+                            style={{ 
+                                background: 'rgba(255, 255, 255, 0.2)', 
+                                border: '1px solid rgba(255, 255, 255, 0.3)',
+                                borderRadius: 8,
+                                padding: '8px 16px',
+                                fontSize: 14, 
+                                cursor: 'pointer', 
+                                color: 'white',
+                                backdropFilter: 'blur(10px)',
+                                transition: 'all 0.3s ease'
+                            }}
                         >
-                            ← 뒤로가기
+                            ← Back
                         </button>
-                        <h2 style={{ color: '#8B4513', textAlign: 'center', marginTop: 10 }}>새 일기 쓰기</h2>
-                    </header>
+                        <h2 className="korean-font" style={{ 
+                            color: 'white', 
+                            textAlign: 'center', 
+                            marginTop: 20,
+                            fontSize: 28,
+                            fontWeight: 600
+                        }}>
+                            새 일기 쓰기
+                        </h2>
+                        <p style={{ 
+                            color: 'rgba(255, 255, 255, 0.8)', 
+                            textAlign: 'center',
+                            fontSize: 14,
+                            marginTop: 8
+                        }}>
+                            {new Date().toLocaleDateString('en-US', { 
+                                weekday: 'long', 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            })}
+                        </p>
+                    </div>
                     
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: 10, color: '#1a1a2e', fontWeight: 'bold' }}>
-                                오늘의 하루 (140자 이내)
+                    <div style={{ 
+                        flex: 1, 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: 24,
+                        maxWidth: 500,
+                        margin: '0 auto',
+                        width: '100%'
+                    }}>
+                        <div className="glass-card" style={{ padding: 24 }}>
+                            <label style={{ 
+                                display: 'block', 
+                                marginBottom: 12, 
+                                color: '#4a5568', 
+                                fontWeight: 600,
+                                fontSize: 14,
+                                textTransform: 'uppercase',
+                                letterSpacing: 1
+                            }}>
+                                How was your day?
                             </label>
                             <textarea
                                 value={diaryText}
@@ -134,84 +397,255 @@
                                     }
                                 }}
                                 placeholder="오늘 있었던 일을 간략히 기록해보세요..."
+                                className="modern-textarea korean-font"
                                 style={{
-                                    width: '100%',
                                     height: 120,
-                                    padding: 15,
-                                    border: '2px solid #8B4513',
-                                    borderRadius: 8,
-                                    fontSize: 16,
-                                    resize: 'none'
+                                    fontSize: 16
                                 }}
                             />
-                            <div style={{ textAlign: 'right', marginTop: 5, color: '#666' }}>
-                                {diaryText.length}/140
+                            <div style={{ 
+                                display: 'flex', 
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: 12
+                            }}>
+                                <div style={{ 
+                                    fontSize: 12, 
+                                    color: '#718096',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 8
+                                }}>
+                                    <span className="mood-indicator mood-good"></span>
+                                    <span>Good</span>
+                                    <span className="mood-indicator mood-neutral"></span>
+                                    <span>Okay</span>
+                                    <span className="mood-indicator mood-bad"></span>
+                                    <span>Tough</span>
+                                </div>
+                                <div style={{ 
+                                    fontSize: 12, 
+                                    color: diaryText.length >= 130 ? '#f56565' : '#718096',
+                                    fontWeight: 500
+                                }}>
+                                    {diaryText.length}/140
+                                </div>
                             </div>
                         </div>
                         
-                        <div style={{ 
-                            height: 200, 
-                            border: '2px dashed #8B4513', 
-                            borderRadius: 8, 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center',
-                            background: '#fff'
+                        <div className="glass-card" style={{ 
+                            padding: 32,
+                            textAlign: 'center',
+                            border: '2px dashed rgba(102, 126, 234, 0.3)',
+                            background: 'rgba(102, 126, 234, 0.05)'
                         }}>
-                            <p style={{ color: '#666' }}>그림 영역 (웹 버전에서는 텍스트만 지원)</p>
+                            <div style={{ fontSize: 48, marginBottom: 12 }}>🎨</div>
+                            <p style={{ 
+                                color: '#718096',
+                                fontSize: 14,
+                                margin: 0
+                            }}>
+                                Drawing area available in mobile app
+                            </p>
+                            <p style={{ 
+                                color: '#a0aec0',
+                                fontSize: 12,
+                                margin: '8px 0 0 0'
+                            }}>
+                                Web version focuses on text entries
+                            </p>
                         </div>
                         
                         <button 
                             onClick={saveDiary}
+                            className="modern-button"
+                            disabled={!diaryText.trim()}
                             style={{
-                                padding: 15,
-                                fontSize: 18,
-                                backgroundColor: '#8B4513',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: 8,
-                                cursor: 'pointer'
+                                opacity: diaryText.trim() ? 1 : 0.6,
+                                cursor: diaryText.trim() ? 'pointer' : 'not-allowed',
+                                fontSize: 16,
+                                fontWeight: 600
                             }}
                         >
-                            저장하기
+                            Save Entry
                         </button>
                     </div>
                 </div>
             );
             
             const ListScreen = () => (
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 20, background: '#f8f9fa' }}>
-                    <header style={{ marginBottom: 20 }}>
+                <div style={{ 
+                    flex: 1, 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    padding: 20,
+                    background: 'transparent'
+                }}>
+                    <div style={{ marginBottom: 30 }}>
                         <button 
                             onClick={() => setCurrentView('home')}
-                            style={{ background: 'none', border: 'none', fontSize: 16, cursor: 'pointer', color: '#8B4513' }}
+                            style={{ 
+                                background: 'rgba(255, 255, 255, 0.2)', 
+                                border: '1px solid rgba(255, 255, 255, 0.3)',
+                                borderRadius: 8,
+                                padding: '8px 16px',
+                                fontSize: 14, 
+                                cursor: 'pointer', 
+                                color: 'white',
+                                backdropFilter: 'blur(10px)',
+                                transition: 'all 0.3s ease'
+                            }}
                         >
-                            ← 뒤로가기
+                            ← Back
                         </button>
-                        <h2 style={{ color: '#8B4513', textAlign: 'center', marginTop: 10 }}>일기 목록</h2>
-                    </header>
+                        <h2 className="korean-font" style={{ 
+                            color: 'white', 
+                            textAlign: 'center', 
+                            marginTop: 20,
+                            fontSize: 28,
+                            fontWeight: 600
+                        }}>
+                            일기 목록
+                        </h2>
+                        <div style={{ 
+                            textAlign: 'center',
+                            marginTop: 8
+                        }}>
+                            <span style={{ 
+                                color: 'rgba(255, 255, 255, 0.8)', 
+                                fontSize: 14,
+                                background: 'rgba(255, 255, 255, 0.2)',
+                                padding: '4px 12px',
+                                borderRadius: 20,
+                                backdropFilter: 'blur(10px)'
+                            }}>
+                                {diaries.length} {diaries.length === 1 ? 'Entry' : 'Entries'}
+                            </span>
+                        </div>
+                    </div>
                     
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 15 }}>
+                    <div style={{ 
+                        flex: 1, 
+                        display: 'flex', 
+                        flexDirection: 'column',
+                        maxWidth: 600,
+                        margin: '0 auto',
+                        width: '100%'
+                    }}>
                         {diaries.length === 0 ? (
-                            <div style={{ textAlign: 'center', padding: 50, color: '#666' }}>
-                                <p>아직 작성된 일기가 없습니다.</p>
-                                <p>첫 번째 일기를 작성해보세요!</p>
+                            <div className="glass-card" style={{ 
+                                textAlign: 'center', 
+                                padding: 60,
+                                background: 'rgba(255, 255, 255, 0.95)'
+                            }}>
+                                <div style={{ fontSize: 64, marginBottom: 20 }}>📝</div>
+                                <h3 style={{ 
+                                    color: '#4a5568', 
+                                    fontSize: 20,
+                                    fontWeight: 600,
+                                    margin: '0 0 12px 0'
+                                }}>
+                                    No entries yet
+                                </h3>
+                                <p style={{ 
+                                    color: '#718096', 
+                                    fontSize: 14,
+                                    margin: '0 0 24px 0',
+                                    lineHeight: 1.5
+                                }}>
+                                    Start your journaling journey by writing your first entry
+                                </p>
+                                <button 
+                                    onClick={() => setCurrentView('write')}
+                                    className="modern-button"
+                                    style={{ fontSize: 14 }}
+                                >
+                                    Write First Entry
+                                </button>
                             </div>
                         ) : (
-                            diaries.map((diary) => (
-                                <div key={diary.id} style={{
-                                    background: 'white',
-                                    padding: 20,
-                                    borderRadius: 8,
-                                    border: '1px solid #ddd',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                                }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                                        <span style={{ color: '#8B4513', fontWeight: 'bold' }}>{diary.date}</span>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                                {diaries.map((diary, index) => (
+                                    <div key={diary.id} className="diary-card">
+                                        <div style={{ 
+                                            display: 'flex', 
+                                            justifyContent: 'space-between', 
+                                            alignItems: 'flex-start',
+                                            marginBottom: 16
+                                        }}>
+                                            <div>
+                                                <div style={{ 
+                                                    color: '#4a5568', 
+                                                    fontWeight: 600,
+                                                    fontSize: 14,
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: 1,
+                                                    marginBottom: 4
+                                                }}>
+                                                    {diary.date}
+                                                </div>
+                                                <div style={{ 
+                                                    color: '#a0aec0', 
+                                                    fontSize: 12,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 8
+                                                }}>
+                                                    <span>Entry #{diaries.length - index}</span>
+                                                    <span>•</span>
+                                                    <span>{new Date(diary.createdAt).toLocaleDateString('en-US', { 
+                                                        month: 'short', 
+                                                        day: 'numeric' 
+                                                    })}</span>
+                                                </div>
+                                            </div>
+                                            <div style={{
+                                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                                color: 'white',
+                                                padding: '4px 12px',
+                                                borderRadius: 20,
+                                                fontSize: 11,
+                                                fontWeight: 600,
+                                                textTransform: 'uppercase',
+                                                letterSpacing: 0.5
+                                            }}>
+                                                {index === 0 ? 'Latest' : `#${diaries.length - index}`}
+                                            </div>
+                                        </div>
+                                        <p className="korean-font" style={{ 
+                                            color: '#2d3748', 
+                                            lineHeight: 1.6,
+                                            fontSize: 16,
+                                            margin: 0,
+                                            whiteSpace: 'pre-wrap'
+                                        }}>
+                                            {diary.text}
+                                        </p>
+                                        <div style={{ 
+                                            marginTop: 16,
+                                            paddingTop: 16,
+                                            borderTop: '1px solid #e2e8f0',
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center'
+                                        }}>
+                                            <div style={{ 
+                                                fontSize: 12, 
+                                                color: '#a0aec0' 
+                                            }}>
+                                                {diary.text.length} characters
+                                            </div>
+                                            <div style={{ 
+                                                display: 'flex',
+                                                gap: 8
+                                            }}>
+                                                <span style={{ fontSize: 16 }}>💭</span>
+                                                <span style={{ fontSize: 16 }}>📖</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p style={{ color: '#1a1a2e', lineHeight: 1.5 }}>{diary.text}</p>
-                                </div>
-                            ))
+                                ))}
+                            </div>
                         )}
                     </div>
                 </div>
