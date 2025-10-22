@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서화일기 - DrawDiary</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #8B4513;
+            color: #1a1a2e;
+        }
+        #root {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 18px;
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <div class="loading">서화일기를 로딩 중입니다...</div>
+    </div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        const App = () => {
+            const [diaries, setDiaries] = useState([]);
+            const [currentView, setCurrentView] = useState('home');
+            const [diaryText, setDiaryText] = useState('');
+            
+            useEffect(() => {
+                const savedDiaries = localStorage.getItem('drawdiary_entries');
+                if (savedDiaries) {
+                    setDiaries(JSON.parse(savedDiaries));
+                }
+            }, []);
+            
+            const saveDiary = () => {
+                if (!diaryText.trim()) return;
+                
+                const newDiary = {
+                    id: Date.now().toString(),
+                    date: new Date().toLocaleDateString('ko-KR'),
+                    text: diaryText,
+                    drawing: '',
+                    createdAt: new Date().toISOString()
+                };
+                
+                const updatedDiaries = [newDiary, ...diaries].slice(0, 5);
+                setDiaries(updatedDiaries);
+                localStorage.setItem('drawdiary_entries', JSON.stringify(updatedDiaries));
+                setDiaryText('');
+                setCurrentView('list');
+            };
+            
+            const HomeScreen = () => (
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 20, background: '#f8f9fa' }}>
+                    <header style={{ textAlign: 'center', marginBottom: 30 }}>
+                        <h1 style={{ color: '#8B4513', fontSize: 32, marginBottom: 10 }}>서화일기</h1>
+                        <p style={{ color: '#666', fontSize: 16 }}>전통미与现代科技的完美结合</p>
+                    </header>
+                    
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
+                        <button 
+                            onClick={() => setCurrentView('write')}
+                            style={{
+                                padding: 20,
+                                fontSize: 18,
+                                backgroundColor: '#8B4513',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: 8,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            새 일기 쓰기
+                        </button>
+                        
+                        <button 
+                            onClick={() => setCurrentView('list')}
+                            style={{
+                                padding: 20,
+                                fontSize: 18,
+                                backgroundColor: '#1a1a2e',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: 8,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            일기 목록 보기
+                        </button>
+                    </div>
+                </div>
+            );
+            
+            const WriteScreen = () => (
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 20, background: '#f8f9fa' }}>
+                    <header style={{ marginBottom: 20 }}>
+                        <button 
+                            onClick={() => setCurrentView('home')}
+                            style={{ background: 'none', border: 'none', fontSize: 16, cursor: 'pointer', color: '#8B4513' }}
+                        >
+                            ← 뒤로가기
+                        </button>
+                        <h2 style={{ color: '#8B4513', textAlign: 'center', marginTop: 10 }}>새 일기 쓰기</h2>
+                    </header>
+                    
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
+                        <div>
+                            <label style={{ display: 'block', marginBottom: 10, color: '#1a1a2e', fontWeight: 'bold' }}>
+                                오늘의 하루 (140자 이내)
+                            </label>
+                            <textarea
+                                value={diaryText}
+                                onChange={(e) => setDiaryText(e.target.value.slice(0, 140))}
+                                placeholder="오늘 있었던 일을 간략히 기록해보세요..."
+                                style={{
+                                    width: '100%',
+                                    height: 120,
+                                    padding: 15,
+                                    border: '2px solid #8B4513',
+                                    borderRadius: 8,
+                                    fontSize: 16,
+                                    resize: 'none'
+                                }}
+                            />
+                            <div style={{ textAlign: 'right', marginTop: 5, color: '#666' }}>
+                                {diaryText.length}/140
+                            </div>
+                        </div>
+                        
+                        <div style={{ 
+                            height: 200, 
+                            border: '2px dashed #8B4513', 
+                            borderRadius: 8, 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            background: '#fff'
+                        }}>
+                            <p style={{ color: '#666' }}>그림 영역 (웹 버전에서는 텍스트만 지원)</p>
+                        </div>
+                        
+                        <button 
+                            onClick={saveDiary}
+                            style={{
+                                padding: 15,
+                                fontSize: 18,
+                                backgroundColor: '#8B4513',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: 8,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            저장하기
+                        </button>
+                    </div>
+                </div>
+            );
+            
+            const ListScreen = () => (
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 20, background: '#f8f9fa' }}>
+                    <header style={{ marginBottom: 20 }}>
+                        <button 
+                            onClick={() => setCurrentView('home')}
+                            style={{ background: 'none', border: 'none', fontSize: 16, cursor: 'pointer', color: '#8B4513' }}
+                        >
+                            ← 뒤로가기
+                        </button>
+                        <h2 style={{ color: '#8B4513', textAlign: 'center', marginTop: 10 }}>일기 목록</h2>
+                    </header>
+                    
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 15 }}>
+                        {diaries.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: 50, color: '#666' }}>
+                                <p>아직 작성된 일기가 없습니다.</p>
+                                <p>첫 번째 일기를 작성해보세요!</p>
+                            </div>
+                        ) : (
+                            diaries.map((diary) => (
+                                <div key={diary.id} style={{
+                                    background: 'white',
+                                    padding: 20,
+                                    borderRadius: 8,
+                                    border: '1px solid #ddd',
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                                }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+                                        <span style={{ color: '#8B4513', fontWeight: 'bold' }}>{diary.date}</span>
+                                    </div>
+                                    <p style={{ color: '#1a1a2e', lineHeight: 1.5 }}>{diary.text}</p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            );
+            
+            return (
+                <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+                    {currentView === 'home' && <HomeScreen />}
+                    {currentView === 'write' && <WriteScreen />}
+                    {currentView === 'list' && <ListScreen />}
+                </div>
+            );
+        };
+        
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
